@@ -32,6 +32,8 @@ The Vite config uses `base: './'`, which keeps the static build compatible with 
 3. Set the source to `GitHub Actions`.
 4. Push to `main` and the included workflow will lint, build, and publish the `dist` folder automatically.
 
+If you just enabled GitHub Pages, either rerun the latest `Deploy to GitHub Pages` workflow or push a new commit to trigger the first deployment.
+
 Included workflow:
 
 ```yaml
