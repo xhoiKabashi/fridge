@@ -54,12 +54,17 @@ const storageLabels: Record<StorageZone | "all", string> = {
   counter: "Counter",
 };
 
+let fallbackItemIdCounter = 0;
+
 function createItemId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
   }
 
-  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  fallbackItemIdCounter += 1;
+  return `item-${Date.now()}-${fallbackItemIdCounter}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}`;
 }
 
 function sortCategories(categories: Category[]) {
