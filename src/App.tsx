@@ -62,9 +62,10 @@ function createItemId() {
   }
 
   fallbackItemIdCounter += 1;
-  return `item-${Date.now()}-${fallbackItemIdCounter}-${Math.random()
-    .toString(36)
-    .slice(2, 10)}`;
+  const highPrecisionTime = globalThis.performance?.now?.().toString(36) ?? "0";
+  const randomSuffix = Math.random().toString(36).slice(2, 12);
+
+  return `item-${Date.now()}-${highPrecisionTime}-${fallbackItemIdCounter}-${randomSuffix}`;
 }
 
 function sortCategories(categories: Category[]) {

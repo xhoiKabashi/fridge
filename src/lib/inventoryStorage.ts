@@ -146,7 +146,7 @@ export function saveInventory(snapshot: InventorySnapshot) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
   } catch {
-    return undefined;
+    return;
   }
 }
 
