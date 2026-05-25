@@ -54,6 +54,14 @@ const storageLabels: Record<StorageZone | "all", string> = {
   counter: "Counter",
 };
 
+function createItemId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 function sortCategories(categories: Category[]) {
   return [...categories].sort((left, right) =>
     left.name.localeCompare(right.name),
@@ -205,7 +213,7 @@ function App() {
     }
 
     const newItem: InventoryItem = {
-      id: crypto.randomUUID(),
+      id: createItemId(),
       name: trimmedName,
       quantity: itemDraft.quantity.trim() || "1",
       unit: itemDraft.unit.trim() || "pcs",

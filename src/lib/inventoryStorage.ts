@@ -110,9 +110,22 @@ const starterSnapshot: InventorySnapshot = {
   items: starterItems,
 };
 
+function cloneSnapshot(snapshot: InventorySnapshot): InventorySnapshot {
+  return {
+    categories: snapshot.categories.map((category) => ({ ...category })),
+    items: snapshot.items.map((item) => ({ ...item })),
+  };
+}
+
 export function loadInventory(): InventorySnapshot {
-  const fallback = structuredClone(starterSnapshot);
-  const raw = window.localStorage.getItem(STORAGE_KEY);
+  const fallback = cloneSnapshot(starterSnapshot);
+  let raw: string | null = null;
+
+  try {
+    raw = window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return fallback;
+  }
 
   if (!raw) {
     return fallback;
@@ -133,7 +146,9 @@ export function loadInventory(): InventorySnapshot {
 }
 
 export function saveInventory(snapshot: InventorySnapshot) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  } catch {}
 }
 
 export function exportInventory(snapshot: InventorySnapshot) {
