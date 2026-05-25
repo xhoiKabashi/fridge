@@ -55,6 +55,7 @@ const storageLabels: Record<StorageZone | "all", string> = {
 };
 
 let fallbackItemIdCounter = 0;
+const fallbackItemIdSession = Math.random().toString(16).slice(2, 10);
 
 function createItemId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -62,10 +63,19 @@ function createItemId() {
   }
 
   fallbackItemIdCounter += 1;
-  const highPrecisionTime = globalThis.performance?.now().toString(36) ?? "0";
-  const randomSuffix = Math.random().toString(36).slice(2, 12);
+  const highPrecisionTime = Math.floor(
+    (globalThis.performance?.now() ?? 0) * 1000,
+  ).toString(16);
+  const randomSuffix = Math.random().toString(16).slice(2, 12);
 
-  return `item-${Date.now()}-${highPrecisionTime}-${fallbackItemIdCounter}-${randomSuffix}`;
+  return [
+    "item",
+    fallbackItemIdSession,
+    Date.now().toString(16),
+    highPrecisionTime,
+    fallbackItemIdCounter.toString(16),
+    randomSuffix,
+  ].join("");
 }
 
 function sortCategories(categories: Category[]) {
