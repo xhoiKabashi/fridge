@@ -119,13 +119,13 @@ function cloneSnapshot(snapshot: InventorySnapshot): InventorySnapshot {
 
 export function loadInventory(): InventorySnapshot {
   const fallback = cloneSnapshot(starterSnapshot);
-  let raw: string | null = null;
-
-  try {
-    raw = window.localStorage.getItem(STORAGE_KEY);
-  } catch {
-    return fallback;
-  }
+  const raw = (() => {
+    try {
+      return window.localStorage.getItem(STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  })();
 
   if (!raw) {
     return fallback;
@@ -148,7 +148,9 @@ export function loadInventory(): InventorySnapshot {
 export function saveInventory(snapshot: InventorySnapshot) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-  } catch {}
+  } catch {
+    return undefined;
+  }
 }
 
 export function exportInventory(snapshot: InventorySnapshot) {
