@@ -62,7 +62,7 @@ function createItemId() {
   }
 
   fallbackItemIdCounter += 1;
-  const highPrecisionTime = globalThis.performance?.now?.().toString(36) ?? "0";
+  const highPrecisionTime = globalThis.performance?.now().toString(36) ?? "0";
   const randomSuffix = Math.random().toString(36).slice(2, 12);
 
   return `item-${Date.now()}-${highPrecisionTime}-${fallbackItemIdCounter}-${randomSuffix}`;

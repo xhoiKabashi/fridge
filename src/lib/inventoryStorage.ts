@@ -111,7 +111,24 @@ const starterSnapshot: InventorySnapshot = {
 };
 
 function cloneSnapshot(snapshot: InventorySnapshot): InventorySnapshot {
-  return JSON.parse(JSON.stringify(snapshot)) as InventorySnapshot;
+  return {
+    categories: snapshot.categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      color: category.color,
+      storage: category.storage,
+      ...(category.builtIn ? { builtIn: true } : {}),
+    })),
+    items: snapshot.items.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      unit: item.unit,
+      categoryId: item.categoryId,
+      expiresOn: item.expiresOn,
+      createdAt: item.createdAt,
+    })),
+  };
 }
 
 export function loadInventory(): InventorySnapshot {
